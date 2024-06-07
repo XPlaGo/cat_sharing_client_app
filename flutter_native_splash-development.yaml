@@ -1,0 +1,15 @@
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/icon/cs_logo_600_rounded.png
+  branding: assets/icon/cs_logo_600_rounded.png
+  color_dark: "#ff0000"
+  image_dark: assets/icon/cs_logo_600_rounded.png
+  branding_dark: assets/icon/cs_logo_600_rounded.png
+
+  android_12:
+    image: assets/icon/cs_logo_600_rounded.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/icon/cs_logo_600_rounded.png
+    icon_background_color_dark: "#ff0000"
+
+  web: false
