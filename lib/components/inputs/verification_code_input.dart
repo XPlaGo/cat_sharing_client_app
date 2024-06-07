@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_verification_code/flutter_verification_code.dart';
 
 class CSVerificationCode extends StatefulWidget {
   /// is completed
@@ -184,20 +183,20 @@ class _CSVerificationCodeState extends State<CSVerificationCode> {
       alignLabelWithHint: true,
     );
 
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: _listFocusNodeKeyListener[index],
-      onKey: (event) {
-        if (event.runtimeType == RawKeyUpEvent) {
-          if (event.data.logicalKey == LogicalKeyboardKey.backspace &&
+      onKeyEvent: (event) {
+        if (event.runtimeType == KeyUpEvent) {
+          if (event.logicalKey == LogicalKeyboardKey.backspace &&
               _listControllerText[index].text.isEmpty) {
             if (index > 0) {
               _listControllerText[index - 1].clear();
             }
             _prev(index);
           }
-          if (event.data.logicalKey == LogicalKeyboardKey.arrowLeft) {
+          if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
             _prev(index);
-          } else if (event.data.logicalKey == LogicalKeyboardKey.arrowRight) {
+          } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
             _next(index);
           }
         }
@@ -332,23 +331,5 @@ class _CSVerificationCodeState extends State<CSVerificationCode> {
   Future<String> _fromClipboard() async {
     ClipboardData? cdata = await Clipboard.getData(Clipboard.kTextPlain);
     return cdata?.text ?? '';
-  }
-
-  Widget _clearAllWidget(child) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        widget.onEditing(true);
-        for (var i = 0; i < widget.length; i++) {
-          _listControllerText[i].text = '';
-        }
-        setState(() {
-          _currentIndex = 0;
-          FocusScope.of(context).requestFocus(_listFocusNode[0]);
-        });
-        widget.onEditing(false);
-      },
-      child: child,
-    );
   }
 }

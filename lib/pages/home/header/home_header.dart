@@ -1,6 +1,5 @@
 import 'package:cat_sharing_client_app/components/buttons/icon_button.dart';
 import 'package:cat_sharing_client_app/components/cat_coins/cat_coins_chip.dart';
-import 'package:cat_sharing_client_app/pages/home/header/profile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/icons/uil.dart';
 

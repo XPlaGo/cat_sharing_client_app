@@ -1,6 +1,5 @@
 import 'package:cat_sharing_client_app/components/buttons/icon_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_scroll_shadow/flutter_scroll_shadow.dart';
 import 'package:iconify_flutter/icons/uil.dart';
 
 class DefaultPage extends StatefulWidget {

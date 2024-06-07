@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/uil.dart';
@@ -114,6 +115,12 @@ Future<void> showNotificationMessage(
             status: status,
           ), actions: const [SizedBox()]));
   await Future.delayed(duration, () {
-    controller.close();
+    try {
+      controller.close();
+    } catch(e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   });
 }

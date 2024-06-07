@@ -8,8 +8,6 @@ import 'package:cat_sharing_client_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:iconify_flutter/icons/uil.dart';
-import 'package:session_storage/session_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart' as unicons;
 
 class AuthEmailPage extends StatefulWidget {

@@ -12,8 +12,6 @@ import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:iconify_flutter/icons/uil.dart';
 import 'package:quiver/async.dart';
-import 'package:session_storage/session_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationResult {
   final bool success;
@@ -191,7 +189,11 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
                     });
                   },
                   itemSize: 45,
-                  onEditing: (bool value) {},
+                  onEditing: (bool value) {
+                    setState(() {
+                      verificationCode = "";
+                    });
+                  },
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   textStyle: Theme.of(context).textTheme.bodyLarge!,
                   autofocus: true,
@@ -212,28 +214,27 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
         setState(() {
           isVerificationLoading = true;
         });
-        VerificationResult result = await verification();
-        if (result.success && mounted) {
-          showNotificationMessage(
-              context,
-              "Email was confirmed",
-              status: NotificationMessageStatus.success
-          );
-          if (result.userExists) {
-            Navigator.of(context).pushReplacementNamed("/auth_signin")
-                .then((value) => reset());
-          } else {
-            Navigator.of(context).pushReplacementNamed("/auth_signup")
-                .then((value) => reset());
-          }
-        }
         try {
-
+          VerificationResult result = await verification();
+          if (result.success && mounted) {
+            showNotificationMessage(
+                context,
+                "Email was confirmed",
+                status: NotificationMessageStatus.success
+            );
+            if (result.userExists) {
+              Navigator.of(context).pushReplacementNamed("/auth_signin")
+                  .then((value) => reset());
+            } else {
+              Navigator.of(context).pushReplacementNamed("/auth_signup")
+                  .then((value) => reset());
+            }
+          }
         } on GrpcError catch (e) {
           if (mounted) {
             showNotificationMessage(context, "${e.message}", status: NotificationMessageStatus.error);
           }
-        } on SocketException catch (e) {
+        } on SocketException {
           if (mounted) {
             showNotificationMessage(context, "Connection error, retry later", status: NotificationMessageStatus.error);
           }
