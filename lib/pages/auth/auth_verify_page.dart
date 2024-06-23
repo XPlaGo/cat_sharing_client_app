@@ -8,6 +8,7 @@ import 'package:cat_sharing_client_app/components/notification/notification_mess
 import 'package:cat_sharing_client_app/generated/auth.pb.dart';
 import 'package:cat_sharing_client_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:iconify_flutter/icons/uil.dart';
@@ -34,6 +35,8 @@ class AuthVerifyPage extends StatefulWidget {
 }
 
 class AuthVerifyPageState extends State<AuthVerifyPage> {
+
+  AuthService authService = GetIt.instance<AuthService>();
 
   String verificationCode = "";
   bool isVerificationLoading = false;
@@ -98,7 +101,6 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
           CSIconButton(
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             overlayColor: Theme.of(context).colorScheme.shadow,
-            //color: const Color(0xFF000000),
             icon: Uil.arrow_left,
             onPressed: (reset) async {
               Navigator.of(context).pop();
@@ -134,7 +136,7 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
             disabledBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
             disabledColor: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
             overlayColor: Theme.of(context).colorScheme.shadow,
-            color: const Color(0xFF000000),
+            color: Theme.of(context).colorScheme.onPrimary,
             icon: Uil.arrow_right,
             //isLoading: isVerificationLoading,
             isDisabled: verificationCode.length != 4,
@@ -216,7 +218,7 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
         });
         try {
           VerificationResult result = await verification();
-          if (result.success && mounted) {
+          if (result.success && context.mounted) {
             showNotificationMessage(
                 context,
                 "Email was confirmed",
@@ -231,21 +233,20 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
             }
           }
         } on GrpcError catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             showNotificationMessage(context, "${e.message}", status: NotificationMessageStatus.error);
           }
         } on SocketException {
-          if (mounted) {
+          if (context.mounted) {
             showNotificationMessage(context, "Connection error, retry later", status: NotificationMessageStatus.error);
           }
         } on Exception catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             showNotificationMessage(context, e.toString(), status: NotificationMessageStatus.error);
           }
         }
         catch (e) {
-          print(e);
-          if (mounted) {
+          if (context.mounted) {
             showNotificationMessage(context, e.toString(), status: NotificationMessageStatus.error);
           }
         }
@@ -257,7 +258,7 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
   }
 
   Future<VerificationResult> verification() async {
-    VerifiedTokenResponse response = await AuthService().sendVerificationCode(verificationCode);
+    VerifiedTokenResponse response = await authService.sendVerificationCode(verificationCode);
     return VerificationResult(success: response.hasAccessToken(), userExists: response.userExists);
   }
 
@@ -270,7 +271,7 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
             isResendCodeLoading = true;
           });
           bool result = await sendVerificationCode();
-          if (result && mounted) {
+          if (result && context.mounted) {
             showNotificationMessage(
                 context,
                 "Verification code was sent on ${args.email}",
@@ -278,7 +279,7 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
             );
           }
         } catch (e) {
-          if (mounted) showNotificationMessage(context, "${(e as GrpcError).message}", status: NotificationMessageStatus.error);
+          if (context.mounted) showNotificationMessage(context, "${(e as GrpcError).message}", status: NotificationMessageStatus.error);
         }
         setState(() {
           isResendCodeLoading = false;
@@ -289,7 +290,7 @@ class AuthVerifyPageState extends State<AuthVerifyPage> {
 
   Future<bool> sendVerificationCode() async {
     final args = ModalRoute.of(context)!.settings.arguments as AuthVerifyPageArguments;
-    PlainTokenResponse response = await AuthService().sendEmail(args.email);
+    PlainTokenResponse response = await authService.sendEmail(args.email);
     return response.hasAccessToken();
   }
 }

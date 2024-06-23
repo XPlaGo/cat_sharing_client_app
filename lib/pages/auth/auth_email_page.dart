@@ -6,6 +6,7 @@ import 'package:cat_sharing_client_app/generated/auth.pb.dart';
 import 'package:cat_sharing_client_app/pages/auth/auth_verify_page.dart';
 import 'package:cat_sharing_client_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:grpc/grpc.dart';
 import 'package:iconify_flutter/icons/uil.dart';
 import 'package:unicons/unicons.dart' as unicons;
@@ -19,6 +20,8 @@ class AuthEmailPage extends StatefulWidget {
 
 class AuthEmailPageState extends State<AuthEmailPage> {
 
+  AuthService authService = GetIt.instance<AuthService>();
+
   String emailValue = "+7 (";
   bool isLoading = false;
 
@@ -30,7 +33,7 @@ class AuthEmailPageState extends State<AuthEmailPage> {
           disabledBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
           disabledColor: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
           overlayColor: Theme.of(context).colorScheme.shadow,
-          color: const Color(0xFF000000),
+          color: Theme.of(context).colorScheme.onPrimary,
           icon: Uil.arrow_right,
           //isLoading: isLoading,
           isDisabled: !validateEmail(emailValue),
@@ -112,7 +115,7 @@ class AuthEmailPageState extends State<AuthEmailPage> {
             isLoading = true;
           });
           bool result = await sendVerificationCode();
-          if (result && mounted) {
+          if (result && context.mounted) {
             showNotificationMessage(
                 context,
                 "Verification code was sent on $emailValue",
@@ -124,7 +127,7 @@ class AuthEmailPageState extends State<AuthEmailPage> {
             ).then((value) => reset());
           }
         } catch (e) {
-          if (mounted) showNotificationMessage(context, "${(e as GrpcError).message}", status: NotificationMessageStatus.error);
+          if (context.mounted) showNotificationMessage(context, "${(e as GrpcError).message}", status: NotificationMessageStatus.error);
         }
         setState(() {
           isLoading = false;
@@ -134,7 +137,7 @@ class AuthEmailPageState extends State<AuthEmailPage> {
   }
 
   Future<bool> sendVerificationCode() async {
-    PlainTokenResponse response = await AuthService().sendEmail(emailValue);
+    PlainTokenResponse response = await authService.sendEmail(emailValue);
     return response.hasAccessToken();
   }
 }

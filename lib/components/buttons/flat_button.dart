@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CSFlatButton extends StatefulWidget {
@@ -20,6 +22,7 @@ class CSFlatButton extends StatefulWidget {
   final List<BoxShadow>? shadow;
   final Widget? prefixIcon;
   final bool showLoader;
+  final String? errorText;
 
   const CSFlatButton({
     super.key,
@@ -40,6 +43,7 @@ class CSFlatButton extends StatefulWidget {
     this.prefixIcon,
     this.textStyle,
     this.showLoader = true,
+    this.errorText,
   });
 
   @override
@@ -53,6 +57,20 @@ class CSFlatButtonState extends State<CSFlatButton> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.errorText == null) {
+      return getButton(context);
+    } else {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          getButton(context),
+          widget.errorText == null ? const SizedBox() : getErrorText(context),
+        ],
+      );
+    }
+  }
+
+  Widget getButton(BuildContext context) {
     return AnimatedScale(
       scale: isPressed ? 0.90 : 1.0,
       duration: const Duration(milliseconds: 100),
@@ -64,26 +82,49 @@ class CSFlatButtonState extends State<CSFlatButton> {
               (widget.disabledBackgroundColor ?? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5))
                   : (widget.backgroundColor ?? Theme.of(context).colorScheme.primaryContainer),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(15.0),
-              boxShadow: widget.shadow
+              boxShadow: widget.shadow,
+              border: widget.errorText == null ? null : Border.all(
+                  color: Theme.of(context).colorScheme.error
+              )
           ),
           child: Material(
-            color: Colors.transparent,
-            child: GestureDetector(
-              onTapCancel: resetIsPress,
-              child: InkWell(
-                onTapDown: onTapDownHandler,
-                onTapUp: onTapUpHandler,
-                borderRadius: BorderRadius.circular(15.0),
-                splashColor: widget.overlayColor ?? Theme.of(context).colorScheme.shadow,
-                splashFactory: InkSparkle.splashFactory,
-                child: Padding(
-                  padding: widget.padding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  child: getContent(context),
+              color: Colors.transparent,
+              child: GestureDetector(
+                onTapCancel: resetIsPress,
+                child: InkWell(
+                  onTapDown: onTapDownHandler,
+                  onTapUp: onTapUpHandler,
+                  borderRadius: BorderRadius.circular(15.0),
+                  splashColor: widget.overlayColor ?? Theme.of(context).colorScheme.shadow,
+                  splashFactory: InkSparkle.splashFactory,
+                  child: Padding(
+                    padding: widget.padding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: getContent(context),
+                  ),
                 ),
-              ),
-            )
+              )
           )
       ),
+    );
+  }
+
+  Widget getErrorText(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              widget.errorText ?? "",
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.error,
+              ),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+            ),
+          )
+        ],
+      )
     );
   }
 
@@ -111,6 +152,7 @@ class CSFlatButtonState extends State<CSFlatButton> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         widget.prefixIcon != null ?
         Padding(
@@ -121,7 +163,7 @@ class CSFlatButtonState extends State<CSFlatButton> {
           widget.text!,
           textAlign: TextAlign.center,
           style: widget.textStyle ?? Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(widget.isDisabled ? 0.5 : 0),
+            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(widget.isDisabled ? 0.5 : 1),
           ),
         )
       ],
@@ -139,7 +181,7 @@ class CSFlatButtonState extends State<CSFlatButton> {
       isPressed = false;
     });
 
-    if (!widget.isDisabled) {
+    if (!widget.isDisabled && !widget.isLoading) {
       Future<void> result = widget.onPressed(() {
         setState(() {
           internalIsLoading = false;

@@ -1,20 +1,22 @@
 import 'dart:async';
-import 'package:cat_sharing_client_app/generated/auth.pb.dart';
+import 'package:cat_sharing_client_app/config/app.config.dart';
 import 'package:cat_sharing_client_app/generated/auth.pbgrpc.dart';
 import 'package:cat_sharing_client_app/generated/google/protobuf/empty.pb.dart';
 import 'package:cat_sharing_client_app/services/storage_service.dart';
 import 'package:grpc/grpc.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class AuthService {
 
   late final ClientChannel channel;
   late final AuthServiceClient stub;
 
-  AuthService() {
+  AuthService(AppConfig appConfig) {
     channel = ClientChannel(
-      '192.168.50.119',
-      port: 9090,
-      options: const ChannelOptions(credentials: ChannelCredentials.insecure(),),
+      appConfig.authService.host,
+      port: appConfig.authService.port,
+      options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
     stub = AuthServiceClient(channel);
   }
@@ -62,7 +64,7 @@ class AuthService {
     await StorageService.remove("userInfo");
   }
 
-  Future<CallOptions> getAuthCallOptions() async {
+  static Future<CallOptions> getAuthCallOptions() async {
     return CallOptions(
       metadata: {
         "Authorization": await getBearerToken(),

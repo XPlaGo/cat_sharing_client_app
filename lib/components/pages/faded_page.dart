@@ -6,11 +6,15 @@ import 'package:iconify_flutter/icons/uil.dart';
 class FadedPage extends StatefulWidget {
   final Widget Function(Function()) getChild;
   final Widget Function(Function())? getAppBarChild;
+  final Widget? floatingButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   const FadedPage({
     super.key,
     required this.getChild,
     this.getAppBarChild,
+    this.floatingButton,
+    this.floatingActionButtonLocation,
   });
 
   @override
@@ -22,6 +26,8 @@ class FadedPageState extends State<FadedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        floatingActionButton: widget.floatingButton,
+        floatingActionButtonLocation: widget.floatingActionButtonLocation,
         body: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -58,10 +64,14 @@ class FadedPageState extends State<FadedPage> {
   Widget getPageBody(BuildContext context) {
     return Expanded(
       child: ScrollShadow(
-        size: 32,
+        size: 0,
         color: Theme.of(context).colorScheme.primaryContainer,
         child: SingleChildScrollView(
-          child: widget.getChild(getGoBack(context)),
+          scrollDirection: Axis.vertical,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: widget.getChild(getGoBack(context)),
+          ),
         ),
       ),
     );

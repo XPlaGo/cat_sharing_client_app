@@ -48,7 +48,7 @@ class DrawerProfileSectionState extends State<DrawerProfileSection> {
           child: CSFlatButton(
               showLoader: false,
               onPressed: (reset) async {
-                if (mounted) {
+                if (context.mounted) {
                   widget.setDrawerState(false);
                   Navigator.of(context).pushNamed("/profile").then((value) => reset());
                 }
@@ -67,10 +67,17 @@ class DrawerProfileSectionState extends State<DrawerProfileSection> {
                     child: getProfileImage(context),
                   ),
                   const SizedBox(width: 10),
-                  Text(userInfo?.name ?? "Unknown", style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w700
-                  )),
-                  const Spacer(),
+                  Expanded(
+                    child: Text(
+                      userInfo?.name ?? "Unknown",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w700
+                      ),
+                      overflow: TextOverflow.fade,
+                      softWrap: false,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
                   Icon(
                     unicons.UniconsLine.angle_right_b,
                     size: 24,
@@ -98,7 +105,7 @@ class DrawerProfileSectionState extends State<DrawerProfileSection> {
         )
       );
     } else {
-      return Image.network(userInfo!.avatar);
+      return Image.network(userInfo!.avatar, fit: BoxFit.cover,);
     }
   }
 }

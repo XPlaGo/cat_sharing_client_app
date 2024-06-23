@@ -7,25 +7,37 @@ ThemeData getDefaultLightTheme(BuildContext context) {
   return ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    dividerColor: const Color.fromRGBO(0, 0, 0, 0.1),
     colorScheme: const ColorScheme.light(
       primary: Color(0xFFFBC304),
+      onPrimary: Color(0xFF000000),
+      onSecondary: Color(0xFFFFFFFF),
+      onTertiary: Color(0xFFFFFFFF),
       primaryContainer: Color(0xFFEEEEEE),
       onPrimaryContainer: Color(0xFFCCCCCC),
       background: Color(0xFFFFFFFF),
-      shadow: Color.fromRGBO(0, 0, 0, 0.1),
+      shadow: Color.fromRGBO(0, 0, 0, 0.05),
+      onError: Color(0xFFFFFFFF),
       error: Color(0xFFF54444),
-      secondary: Color(0xFF199A65),
       surface: Color(0xFFFFFFFF),
+    ).copyWith(
+      secondary: const Color(0xFF000000),
+        tertiary: const Color(0xFF53a653)
     ),
     fontFamily: GoogleFonts.manrope().fontFamily,
     textTheme: TextTheme(
       displayLarge: GoogleFonts.manrope(
-        fontSize: 30,
+        fontSize: 48,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.8,
+      ),
+      displayMedium: GoogleFonts.manrope(
+        fontSize: 28,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.8,
       ),
       displaySmall: GoogleFonts.manrope(
-          fontSize: 22,
+          fontSize: 24,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.8,
           color: const Color(0xFFAAAAAA)

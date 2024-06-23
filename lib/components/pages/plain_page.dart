@@ -10,7 +10,7 @@ class PlainPage extends StatefulWidget {
     super.key,
     required this.child,
     this.floatingButton,
-    this.floatingActionButtonLocation = FloatingActionButtonLocation.endFloat,
+    this.floatingActionButtonLocation,
   });
 
   @override

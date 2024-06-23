@@ -138,3 +138,41 @@ abstract class AuthServiceBase extends $grpc.Service {
   $async.Future<$0.TokenWithUserResponse> signIn($grpc.ServiceCall call, $0.SignInRequest request);
   $async.Future<$0.TokenWithUserResponse> refresh($grpc.ServiceCall call, $1.Empty request);
 }
+@$pb.GrpcServiceName('xplago.UserService')
+class UserServiceClient extends $grpc.Client {
+  static final _$getUserByEmail = $grpc.ClientMethod<$0.GetUserByEmailRequest, $0.UserInfo>(
+      '/xplago.UserService/getUserByEmail',
+      ($0.GetUserByEmailRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.UserInfo.fromBuffer(value));
+
+  UserServiceClient($grpc.ClientChannel channel,
+      {$grpc.CallOptions? options,
+      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
+      : super(channel, options: options,
+        interceptors: interceptors);
+
+  $grpc.ResponseFuture<$0.UserInfo> getUserByEmail($0.GetUserByEmailRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getUserByEmail, request, options: options);
+  }
+}
+
+@$pb.GrpcServiceName('xplago.UserService')
+abstract class UserServiceBase extends $grpc.Service {
+  $core.String get $name => 'xplago.UserService';
+
+  UserServiceBase() {
+    $addMethod($grpc.ServiceMethod<$0.GetUserByEmailRequest, $0.UserInfo>(
+        'getUserByEmail',
+        getUserByEmail_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GetUserByEmailRequest.fromBuffer(value),
+        ($0.UserInfo value) => value.writeToBuffer()));
+  }
+
+  $async.Future<$0.UserInfo> getUserByEmail_Pre($grpc.ServiceCall call, $async.Future<$0.GetUserByEmailRequest> request) async {
+    return getUserByEmail(call, await request);
+  }
+
+  $async.Future<$0.UserInfo> getUserByEmail($grpc.ServiceCall call, $0.GetUserByEmailRequest request);
+}

@@ -14,7 +14,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'google/protobuf/timestamp.pb.dart' as $2;
+import 'google/protobuf/timestamp.pb.dart' as $7;
 
 class SendEmailRequest extends $pb.GeneratedMessage {
   factory SendEmailRequest({
@@ -119,7 +119,7 @@ class SendVerificationCodeRequest extends $pb.GeneratedMessage {
 class SignUpRequest extends $pb.GeneratedMessage {
   factory SignUpRequest({
     $core.String? name,
-    $2.Timestamp? birthday,
+    $7.Timestamp? birthday,
     $core.String? password,
     $core.String? avatar,
   }) {
@@ -144,7 +144,7 @@ class SignUpRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SignUpRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'xplago'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..aOM<$2.Timestamp>(2, _omitFieldNames ? '' : 'birthday', subBuilder: $2.Timestamp.create)
+    ..aOM<$7.Timestamp>(2, _omitFieldNames ? '' : 'birthday', subBuilder: $7.Timestamp.create)
     ..aOS(3, _omitFieldNames ? '' : 'password')
     ..aOS(4, _omitFieldNames ? '' : 'avatar')
     ..hasRequiredFields = false
@@ -181,15 +181,15 @@ class SignUpRequest extends $pb.GeneratedMessage {
   void clearName() => clearField(1);
 
   @$pb.TagNumber(2)
-  $2.Timestamp get birthday => $_getN(1);
+  $7.Timestamp get birthday => $_getN(1);
   @$pb.TagNumber(2)
-  set birthday($2.Timestamp v) { setField(2, v); }
+  set birthday($7.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBirthday() => $_has(1);
   @$pb.TagNumber(2)
   void clearBirthday() => clearField(2);
   @$pb.TagNumber(2)
-  $2.Timestamp ensureBirthday() => $_ensure(1);
+  $7.Timestamp ensureBirthday() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $core.String get password => $_getSZ(2);
@@ -379,7 +379,7 @@ class UserInfo extends $pb.GeneratedMessage {
     $fixnum.Int64? id,
     $core.String? email,
     $core.String? name,
-    $2.Timestamp? birthday,
+    $7.Timestamp? birthday,
     $core.String? avatar,
     $core.bool? isBlocked,
   }) {
@@ -412,7 +412,7 @@ class UserInfo extends $pb.GeneratedMessage {
     ..aInt64(1, _omitFieldNames ? '' : 'id')
     ..aOS(2, _omitFieldNames ? '' : 'email')
     ..aOS(3, _omitFieldNames ? '' : 'name')
-    ..aOM<$2.Timestamp>(4, _omitFieldNames ? '' : 'birthday', subBuilder: $2.Timestamp.create)
+    ..aOM<$7.Timestamp>(4, _omitFieldNames ? '' : 'birthday', subBuilder: $7.Timestamp.create)
     ..aOS(5, _omitFieldNames ? '' : 'avatar')
     ..aOB(6, _omitFieldNames ? '' : 'isBlocked', protoName: 'isBlocked')
     ..hasRequiredFields = false
@@ -467,15 +467,15 @@ class UserInfo extends $pb.GeneratedMessage {
   void clearName() => clearField(3);
 
   @$pb.TagNumber(4)
-  $2.Timestamp get birthday => $_getN(3);
+  $7.Timestamp get birthday => $_getN(3);
   @$pb.TagNumber(4)
-  set birthday($2.Timestamp v) { setField(4, v); }
+  set birthday($7.Timestamp v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasBirthday() => $_has(3);
   @$pb.TagNumber(4)
   void clearBirthday() => clearField(4);
   @$pb.TagNumber(4)
-  $2.Timestamp ensureBirthday() => $_ensure(3);
+  $7.Timestamp ensureBirthday() => $_ensure(3);
 
   @$pb.TagNumber(5)
   $core.String get avatar => $_getSZ(4);
@@ -560,6 +560,56 @@ class TokenWithUserResponse extends $pb.GeneratedMessage {
   void clearUserInfo() => clearField(2);
   @$pb.TagNumber(2)
   UserInfo ensureUserInfo() => $_ensure(1);
+}
+
+class GetUserByEmailRequest extends $pb.GeneratedMessage {
+  factory GetUserByEmailRequest({
+    $core.String? email,
+  }) {
+    final $result = create();
+    if (email != null) {
+      $result.email = email;
+    }
+    return $result;
+  }
+  GetUserByEmailRequest._() : super();
+  factory GetUserByEmailRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetUserByEmailRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetUserByEmailRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'xplago'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'email')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetUserByEmailRequest clone() => GetUserByEmailRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetUserByEmailRequest copyWith(void Function(GetUserByEmailRequest) updates) => super.copyWith((message) => updates(message as GetUserByEmailRequest)) as GetUserByEmailRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetUserByEmailRequest create() => GetUserByEmailRequest._();
+  GetUserByEmailRequest createEmptyInstance() => create();
+  static $pb.PbList<GetUserByEmailRequest> createRepeated() => $pb.PbList<GetUserByEmailRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetUserByEmailRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetUserByEmailRequest>(create);
+  static GetUserByEmailRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get email => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set email($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasEmail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEmail() => clearField(1);
 }
 
 

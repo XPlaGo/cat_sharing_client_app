@@ -1,4 +1,5 @@
 import 'package:cat_sharing_client_app/pages/home/sections/actions/action_card.dart';
+import 'package:cat_sharing_client_app/pages/sale_offers/sale_offers_page.dart';
 import 'package:flutter/material.dart';
 
 class ActionsSection extends StatefulWidget {
@@ -11,11 +12,11 @@ class ActionsSection extends StatefulWidget {
 class ActionsSectionState extends State<ActionsSection> {
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 26),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 26),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
               Expanded(
                   child: ActionCard(
@@ -32,13 +33,16 @@ class ActionsSectionState extends State<ActionsSection> {
               ),
             ],
           ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           Row(
             children: [
               Expanded(
                   child: ActionCard(
                     actionName: "Byu",
                     imagePath: "assets/actions/buy4.png",
+                    onPressed: (reset) {
+                      Navigator.of(context).pushNamed(SaleOffersPage.pageRoute).then((value) => reset());
+                    },
                   )
               ),
             ],

@@ -2,6 +2,8 @@ import 'package:cat_sharing_client_app/components/drawers/sections/drawer_pages_
 import 'package:cat_sharing_client_app/components/drawers/sections/drawer_profile_section.dart';
 import 'package:cat_sharing_client_app/components/drawers/sections/drawer_tools_section.dart';
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/icons8.dart';
 import 'package:unicons/unicons.dart' as unicons;
 
 class DefaultDrawer extends StatefulWidget {
@@ -28,8 +30,8 @@ class DefaultDrawerState extends State<DefaultDrawer> {
       DrawerPagesSectionItem(
           pageName: "My cats",
           pageRoute: "/mycats",
-        pageIcon: Icon(
-          unicons.UniconsLine.smile,
+        pageIcon: Iconify(
+          Icons8.cat_footprint,
           size: 24,
           color: Theme.of(context).textTheme.bodyMedium?.color,
         ),

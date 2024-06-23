@@ -1,0 +1,22 @@
+{
+  "authService": {
+    "host": "192.168.50.119",
+    "port": 9090
+  },
+  "catService": {
+    "host": "192.168.50.119",
+    "port": 9091
+  },
+  "paymentService": {
+    "host": "192.168.50.119",
+    "port": 9093
+  },
+  "transactionService": {
+    "host": "192.168.50.119",
+    "port": 9094
+  },
+  "tradeService": {
+    "host": "192.168.50.119",
+    "port": 9095
+  }
+}

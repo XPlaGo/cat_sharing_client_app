@@ -43,7 +43,7 @@ class NotificationMessageState extends State<SnackbarMessage> {
         icon = Iconify(
           Uil.check,
           size: 32,
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.tertiary,
         );
     }
 
@@ -55,7 +55,7 @@ class NotificationMessageState extends State<SnackbarMessage> {
         child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Theme.of(context).colorScheme.surface,
+              color: Theme.of(context).colorScheme.primaryContainer,
               boxShadow: [BoxShadow(
                 color: Theme.of(context).colorScheme.shadow,
                 blurRadius: 10,

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cat_sharing_client_app/components/buttons/flat_button.dart';
 import 'package:cat_sharing_client_app/components/buttons/icon_button.dart';
 import 'package:cat_sharing_client_app/components/inputs/text_input.dart';
@@ -7,7 +10,9 @@ import 'package:cat_sharing_client_app/generated/auth.pb.dart';
 import 'package:cat_sharing_client_app/generated/auth.pbgrpc.dart';
 import 'package:cat_sharing_client_app/generated/google/protobuf/timestamp.pb.dart';
 import 'package:cat_sharing_client_app/services/auth_service.dart';
+import 'package:cat_sharing_client_app/services/grpc_tools_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
@@ -24,11 +29,15 @@ class AuthSignupPage extends StatefulWidget {
 
 class AuthSignupPageState extends State<AuthSignupPage> {
 
+  AuthService authService = GetIt.instance<AuthService>();
+
   String nameValue = "";
   String passwordValue = "";
   DateTime? birthdayValue;
   bool isVerificationLoading = false;
   bool isResendCodeLoading = false;
+
+  Map<String, dynamic>? errors;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +75,7 @@ class AuthSignupPageState extends State<AuthSignupPage> {
             disabledBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
             disabledColor: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.3),
             overlayColor: Theme.of(context).colorScheme.shadow,
-            color: const Color(0xFF000000),
+            color: Theme.of(context).colorScheme.onPrimary,
             icon: Uil.arrow_right,
             //isLoading: isVerificationLoading,
             isDisabled: passwordValue.length < 6,
@@ -136,8 +145,10 @@ class AuthSignupPageState extends State<AuthSignupPage> {
   Widget getPasswordInput(BuildContext context) {
     return CSTextInput(
       obscureText: true,
+      maxLines: 1,
       keyboardType: TextInputType.text,
       placeholder: "Password",
+      errorText: errors?["password"]?["message"],
       prefixIcon: Icon(
         unicons.UniconsLine.asterisk,
         size: 24,
@@ -160,6 +171,7 @@ class AuthSignupPageState extends State<AuthSignupPage> {
     return CSTextInput(
       keyboardType: TextInputType.text,
       placeholder: "Name",
+      errorText: errors?["name"]?["message"],
       prefixIcon: Icon(
         unicons.UniconsLine.user,
         size: 24,
@@ -182,8 +194,9 @@ class AuthSignupPageState extends State<AuthSignupPage> {
     return CSFlatButton(
         padding: const EdgeInsets.all(0),
         onPressed: (reset) async {
-          getBirthdayHandler(context);
+          await getBirthdayHandler(context)();
         },
+        errorText: errors?["birthday"]?["message"],
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -217,14 +230,15 @@ class AuthSignupPageState extends State<AuthSignupPage> {
 
   Future<void> Function() getBirthdayHandler(BuildContext context) {
     return () async {
-      DateTime? birthDayResult = await showDatePicker(
+      DateTime? birthdayResult = await showDatePicker(
+        helpText: "Select your birthday",
         context: context,
         firstDate: DateTime(1900),
         lastDate: DateTime.now(),
       );
 
       setState(() {
-        birthdayValue = birthDayResult;
+        birthdayValue = birthdayResult;
       });
     };
   }
@@ -237,7 +251,7 @@ class AuthSignupPageState extends State<AuthSignupPage> {
             isResendCodeLoading = true;
           });
           bool result = await signup();
-          if (result && mounted) {
+          if (result && context.mounted) {
             showNotificationMessage(
                 context,
                 "You successfully signed up",
@@ -246,8 +260,13 @@ class AuthSignupPageState extends State<AuthSignupPage> {
             Navigator.of(context).pushNamedAndRemoveUntil("/", (route) => false)
               .then((value) => reset());
           }
+        } on GrpcError catch (e) {
+          setState(() {
+            errors = GrpcToolsService.extractErrorsFromTrailers(e);
+          });
+          if (context.mounted) showNotificationMessage(context, "${e.message}", status: NotificationMessageStatus.error);
         } catch (e) {
-          if (mounted) showNotificationMessage(context, "${(e as GrpcError).message}", status: NotificationMessageStatus.error);
+          if (context.mounted) showNotificationMessage(context, "$e", status: NotificationMessageStatus.error);
         }
         setState(() {
           isResendCodeLoading = false;
@@ -257,10 +276,10 @@ class AuthSignupPageState extends State<AuthSignupPage> {
   }
 
   Future<bool> signup() async {
-    TokenWithUserResponse response = await AuthService().signUp(SignUpRequest(
+    TokenWithUserResponse response = await authService.signUp(SignUpRequest(
       name: nameValue,
       password: passwordValue,
-      birthday: Timestamp.fromDateTime(DateTime.now())
+      birthday: (birthdayValue == null) ? null : Timestamp.fromDateTime(birthdayValue!)
     ));
     return response.hasAccessToken();
   }

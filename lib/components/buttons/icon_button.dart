@@ -15,6 +15,7 @@ class CSIconButton extends StatefulWidget {
   final bool isDisabled;
   final List<BoxShadow>? shadow;
   final bool showLoader;
+  final EdgeInsetsGeometry? padding;
 
   const CSIconButton({
     super.key,
@@ -30,6 +31,7 @@ class CSIconButton extends StatefulWidget {
     this.isDisabled = false,
     this.shadow,
     this.showLoader = true,
+    this.padding,
   });
 
   @override
@@ -67,7 +69,7 @@ class CSIconButtonState extends State<CSIconButton> {
                 splashColor: widget.overlayColor ?? Theme.of(context).colorScheme.primaryContainer,
                 splashFactory: InkSparkle.splashFactory,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  padding: widget.padding ?? const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: getContent(context),
                 ),
               ),
@@ -113,7 +115,7 @@ class CSIconButtonState extends State<CSIconButton> {
       isPressed = false;
     });
 
-    if (!widget.isDisabled) {
+    if (!widget.isDisabled && !widget.isLoading) {
       Future<void> result = widget.onPressed(() {
         setState(() {
           internalIsLoading = false;

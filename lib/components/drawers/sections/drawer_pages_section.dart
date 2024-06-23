@@ -46,7 +46,7 @@ class DrawerPagesSectionState extends State<DrawerPagesSection> {
                   Theme.of(context).colorScheme.primaryContainer,
                   onPressed: (reset) async {
                     widget.setDrawerState(false);
-                    if (mounted && ModalRoute.of(context)?.settings.name != item.pageRoute) {
+                    if (context.mounted && ModalRoute.of(context)?.settings.name != item.pageRoute) {
                       Navigator.of(context).pushNamed(item.pageRoute).then((value) => reset());
                     }
                   },
@@ -67,7 +67,7 @@ class DrawerPagesSectionState extends State<DrawerPagesSection> {
                   )),
               index != widget.items.length - 1 ? Divider(
                 height: 1,
-                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.1),
+                color: Theme.of(context).dividerColor,
               ) : const SizedBox(),
             ],
           ));

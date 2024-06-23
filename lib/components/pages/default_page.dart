@@ -6,12 +6,14 @@ class DefaultPage extends StatefulWidget {
   final Widget Function(Function()) getChild;
   final Widget Function(Function())? getAppBarChild;
   final Widget? floatingButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   const DefaultPage({
     super.key,
     required this.getChild,
     this.getAppBarChild,
     this.floatingButton,
+    this.floatingActionButtonLocation,
   });
 
   @override
@@ -24,15 +26,20 @@ class DefaultPageState extends State<DefaultPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         floatingActionButton: widget.floatingButton,
-        body: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              getAppBar(context),
-              getPageBody(context),
-            ],
-          )
-        ));
+        floatingActionButtonLocation: widget.floatingActionButtonLocation,
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  getAppBar(context),
+                  getPageBody(context),
+                ],
+              )
+          ),
+        )
+    );
   }
 
   Widget getAppBar(BuildContext context) {

@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cat_sharing_client_app/components/buttons/icon_button.dart';
 import 'package:cat_sharing_client_app/components/inputs/text_input.dart';
 import 'package:cat_sharing_client_app/components/pages/plain_page.dart';
 import 'package:cat_sharing_client_app/components/notification/notification_message.dart';
 import 'package:cat_sharing_client_app/generated/auth.pb.dart';
 import 'package:cat_sharing_client_app/services/auth_service.dart';
+import 'package:cat_sharing_client_app/services/grpc_tools_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:iconify_flutter/icons/uil.dart';
@@ -19,9 +24,13 @@ class AuthSigninPage extends StatefulWidget {
 
 class AuthSigninPageState extends State<AuthSigninPage> {
 
+  AuthService authService = GetIt.instance<AuthService>();
+
   String passwordValue = "";
   bool isVerificationLoading = false;
   bool isResendCodeLoading = false;
+
+  Map<String, dynamic>? errors;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +68,7 @@ class AuthSigninPageState extends State<AuthSigninPage> {
             disabledBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
             disabledColor: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
             overlayColor: Theme.of(context).colorScheme.shadow,
-            color: const Color(0xFF000000),
+            color: Theme.of(context).colorScheme.onPrimary,
             icon: Uil.arrow_right,
             //isLoading: isVerificationLoading,
             isDisabled: passwordValue.length < 6,
@@ -103,8 +112,10 @@ class AuthSigninPageState extends State<AuthSigninPage> {
           const SizedBox(height: 20,),
           CSTextInput(
             obscureText: true,
+            maxLines: 1,
             keyboardType: TextInputType.text,
             placeholder: "Password",
+            errorText: errors?["password"]?["message"],
             prefixIcon: Icon(
               unicons.UniconsLine.asterisk,
               size: 24,
@@ -135,7 +146,7 @@ class AuthSigninPageState extends State<AuthSigninPage> {
             isResendCodeLoading = true;
           });
           bool result = await signin();
-          if (result && mounted) {
+          if (result && context.mounted) {
             showNotificationMessage(
                 context,
                 "You successfully signed in",
@@ -144,8 +155,13 @@ class AuthSigninPageState extends State<AuthSigninPage> {
             Navigator.of(context).pushNamedAndRemoveUntil("/", (route) => false)
               .then((value) => reset());
           }
+        } on GrpcError catch (e) {
+          setState(() {
+            errors = GrpcToolsService.extractErrorsFromTrailers(e);
+          });
+          if (context.mounted) showNotificationMessage(context, "${e.message}", status: NotificationMessageStatus.error);
         } catch (e) {
-          if (mounted) showNotificationMessage(context, "${(e as GrpcError).message}", status: NotificationMessageStatus.error);
+          if (context.mounted) showNotificationMessage(context, "$e", status: NotificationMessageStatus.error);
         }
         setState(() {
           isResendCodeLoading = false;
@@ -155,7 +171,7 @@ class AuthSigninPageState extends State<AuthSigninPage> {
   }
 
   Future<bool> signin() async {
-    TokenWithUserResponse response = await AuthService().signIn(SignInRequest(
+    TokenWithUserResponse response = await authService.signIn(SignInRequest(
       password: passwordValue,
     ));
     return response.hasAccessToken();

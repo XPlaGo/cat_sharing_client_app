@@ -139,7 +139,7 @@ class CSAccentButtonState extends State<CSAccentButton> {
       isPressed = false;
     });
 
-    if (!widget.isDisabled) {
+    if (!widget.isDisabled && !widget.isLoading) {
       Future<void> result = widget.onPressed(() {
         setState(() {
           internalIsLoading = false;

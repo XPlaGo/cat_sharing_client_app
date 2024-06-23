@@ -22,7 +22,7 @@ class SearchPageState extends State<SearchPage> {
   }
 
   Widget Function(Function()) getAppBarChild(BuildContext context) {
-    return (gpBack) {
+    return (goBack) {
       return Padding(
         padding: const EdgeInsets.all(10),
         child: Hero(

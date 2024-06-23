@@ -17,5 +17,9 @@ samples, guidance on mobile development, and a full API reference.
 
 # gRPC proto generation
 ```bash
-protoc -I protos/ protos/auth.proto google/protobuf/timestamp.proto google/protobuf/empty.proto --dart_out=grpc:lib/generated
+protoc -I protos/ protos/* google/protobuf/timestamp.proto google/protobuf/empty.proto google/protobuf/wrappers.proto --dart_out=grpc:lib/generated
+```
+# Injectable generation
+```bash
+dart run build_runner build --delete-conflicting-outputs
 ```

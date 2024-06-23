@@ -7,30 +7,42 @@ ThemeData getDefaultDarkTheme(BuildContext context) {
   return ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
+    dividerColor: const Color.fromRGBO(255, 255, 255, 0.2),
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFFFBC304),
+      onPrimary: Color(0xFF000000),
+      onSecondary: Color(0xFF000000),
+      onTertiary: Color(0xFF000000),
       primaryContainer: Color(0xFF222222),
       onPrimaryContainer: Color(0xFF111111),
       background: Color(0xFF000000),
       shadow: Color.fromRGBO(0, 0, 0, 0.5),
       error: Color(0xFFF54444),
-      secondary: Color(0xFF199A65),
+      onError: Color(0xFFFFFFFF),
       surface: Color(0xFF222222),
+    ).copyWith(
+      secondary: const Color(0xFFFFFFFF),
+      tertiary: const Color(0xFF53a653)
     ),
     fontFamily: GoogleFonts.manrope().fontFamily,
     textTheme: TextTheme(
       displayLarge: GoogleFonts.manrope(
-        fontSize: 30,
+        fontSize: 48,
+        fontWeight: FontWeight.w600,
+        color: const Color(0xFFFFFFFF),
+      ),
+      displayMedium: GoogleFonts.manrope(
+        fontSize: 28,
         fontWeight: FontWeight.w600,
         color: const Color(0xFFFFFFFF),
       ),
       displaySmall: GoogleFonts.manrope(
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: FontWeight.w600,
         color: const Color(0xFFFFFFFF),
       ),
       titleLarge: GoogleFonts.manrope(
-        fontSize: 22,
+        fontSize: 32,
         fontWeight: FontWeight.w600,
         color: const Color(0xFFFFFFFF),
 

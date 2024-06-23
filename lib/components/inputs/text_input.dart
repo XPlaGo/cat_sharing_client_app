@@ -7,8 +7,10 @@ class CSTextInput extends StatefulWidget {
   final Function(String)? onComplete;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
+  final TextEditingController? controller;
   final String? placeholder;
   final Widget? prefixIcon;
+  final Widget? postfix;
   final bool autofocus;
   final TextInputType? keyboardType;
   final String? initialValue;
@@ -16,12 +18,17 @@ class CSTextInput extends StatefulWidget {
   final bool showClearButton;
   final EdgeInsetsGeometry? padding;
   final bool obscureText;
+  final TextStyle? textStyle;
+  final int? maxLines;
+  final bool expands;
 
   const CSTextInput({
     super.key,
     this.onComplete,
     this.onChanged,
+    this.controller,
     this.prefixIcon,
+    this.postfix,
     this.inputFormatters,
     this.placeholder,
     this.autofocus = false,
@@ -31,6 +38,9 @@ class CSTextInput extends StatefulWidget {
     this.showClearButton = true,
     this.padding,
     this.obscureText = false,
+    this.textStyle,
+    this.maxLines,
+    this.expands = false,
   });
 
   @override
@@ -39,7 +49,7 @@ class CSTextInput extends StatefulWidget {
 
 class CSTextInputState extends State<CSTextInput> {
 
-  final _controller = TextEditingController();
+  late final _controller;
 
   String textValue = "";
 
@@ -48,12 +58,15 @@ class CSTextInputState extends State<CSTextInput> {
     super.initState();
 
     textValue = widget.initialValue ?? "";
+    _controller = widget.controller ?? TextEditingController();
     _controller.text = textValue;
   }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      expands: widget.expands,
+      maxLines: widget.maxLines,
       obscureText: widget.obscureText,
       inputFormatters: widget.inputFormatters,
       autofocus: widget.autofocus,
@@ -75,16 +88,25 @@ class CSTextInputState extends State<CSTextInput> {
           child: widget.prefixIcon,
         ) : null,
         errorText: widget.errorText,
-        suffixIcon: widget.showClearButton && textValue.isNotEmpty ? GestureDetector(
+        suffixIcon: (widget.showClearButton && textValue.isNotEmpty) || widget.postfix != null ? GestureDetector(
           onTap: clearValue,
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Icon(
-              unicons.UniconsLine.multiply,
-              size: 24,
-              color: Theme.of(context).textTheme.bodyMedium?.color,
-            ),
-          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              widget.postfix != null ? Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: widget.postfix,
+              ) : const SizedBox(),
+              widget.showClearButton && textValue.isNotEmpty ? Padding(
+                padding: const EdgeInsets.all(15),
+                child: Icon(
+                  unicons.UniconsLine.multiply,
+                  size: 24,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                ),
+              ) : const SizedBox(),
+            ],
+          )
         ) : null,
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -107,7 +129,7 @@ class CSTextInputState extends State<CSTextInput> {
             )
         ),
         focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
             borderSide: BorderSide(
               color: Theme
                   .of(context)
@@ -134,7 +156,7 @@ class CSTextInputState extends State<CSTextInput> {
       ),
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.left,
-      style: Theme
+      style: widget.textStyle ?? Theme
           .of(context)
           .textTheme
           .bodyMedium,

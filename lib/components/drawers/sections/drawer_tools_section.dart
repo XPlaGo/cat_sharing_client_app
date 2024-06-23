@@ -44,7 +44,7 @@ class DrawerToolsSectionState extends State<DrawerToolsSection> {
                       Theme.of(context).colorScheme.background,
                   onPressed: (reset) async {
                     widget.setDrawerState(false);
-                    if (mounted && ModalRoute.of(context)?.settings.name != item.itemRoute) {
+                    if (context.mounted && ModalRoute.of(context)?.settings.name != item.itemRoute) {
                       Navigator.of(context).pushNamed(item.itemRoute).then((value) => reset());
                     }
                   },
@@ -65,7 +65,7 @@ class DrawerToolsSectionState extends State<DrawerToolsSection> {
                   )),
               index != widget.items.length - 1 ? Divider(
                 height: 1,
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: Theme.of(context).dividerColor,
               ) : const SizedBox(),
             ],
           ));

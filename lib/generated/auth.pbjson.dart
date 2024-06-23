@@ -127,3 +127,15 @@ final $typed_data.Uint8List tokenWithUserResponseDescriptor = $convert.base64Dec
     'ChVUb2tlbldpdGhVc2VyUmVzcG9uc2USIAoLYWNjZXNzVG9rZW4YASABKAlSC2FjY2Vzc1Rva2'
     'VuEiwKCHVzZXJJbmZvGAIgASgLMhAueHBsYWdvLlVzZXJJbmZvUgh1c2VySW5mbw==');
 
+@$core.Deprecated('Use getUserByEmailRequestDescriptor instead')
+const GetUserByEmailRequest$json = {
+  '1': 'GetUserByEmailRequest',
+  '2': [
+    {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
+  ],
+};
+
+/// Descriptor for `GetUserByEmailRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserByEmailRequestDescriptor = $convert.base64Decode(
+    'ChVHZXRVc2VyQnlFbWFpbFJlcXVlc3QSFAoFZW1haWwYASABKAlSBWVtYWls');
+
