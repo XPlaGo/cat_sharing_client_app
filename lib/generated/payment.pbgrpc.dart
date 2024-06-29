@@ -185,6 +185,10 @@ class PaymentServiceClient extends $grpc.Client {
       '/xplago.PaymentService/transfer',
       ($4.TransferRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $4.TransactionInfo.fromBuffer(value));
+  static final _$replenish = $grpc.ClientMethod<$4.ReplenishRequest, $4.TransactionInfo>(
+      '/xplago.PaymentService/replenish',
+      ($4.ReplenishRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $4.TransactionInfo.fromBuffer(value));
   static final _$rollback = $grpc.ClientMethod<$3.StringValue, $1.Empty>(
       '/xplago.PaymentService/rollback',
       ($3.StringValue value) => value.writeToBuffer(),
@@ -198,6 +202,10 @@ class PaymentServiceClient extends $grpc.Client {
 
   $grpc.ResponseStream<$4.TransactionInfo> transfer($4.TransferRequest request, {$grpc.CallOptions? options}) {
     return $createStreamingCall(_$transfer, $async.Stream.fromIterable([request]), options: options);
+  }
+
+  $grpc.ResponseStream<$4.TransactionInfo> replenish($4.ReplenishRequest request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$replenish, $async.Stream.fromIterable([request]), options: options);
   }
 
   $grpc.ResponseFuture<$1.Empty> rollback($3.StringValue request, {$grpc.CallOptions? options}) {
@@ -217,6 +225,13 @@ abstract class PaymentServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $4.TransferRequest.fromBuffer(value),
         ($4.TransactionInfo value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$4.ReplenishRequest, $4.TransactionInfo>(
+        'replenish',
+        replenish_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $4.ReplenishRequest.fromBuffer(value),
+        ($4.TransactionInfo value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.StringValue, $1.Empty>(
         'rollback',
         rollback_Pre,
@@ -230,10 +245,15 @@ abstract class PaymentServiceBase extends $grpc.Service {
     yield* transfer(call, await request);
   }
 
+  $async.Stream<$4.TransactionInfo> replenish_Pre($grpc.ServiceCall call, $async.Future<$4.ReplenishRequest> request) async* {
+    yield* replenish(call, await request);
+  }
+
   $async.Future<$1.Empty> rollback_Pre($grpc.ServiceCall call, $async.Future<$3.StringValue> request) async {
     return rollback(call, await request);
   }
 
   $async.Stream<$4.TransactionInfo> transfer($grpc.ServiceCall call, $4.TransferRequest request);
+  $async.Stream<$4.TransactionInfo> replenish($grpc.ServiceCall call, $4.ReplenishRequest request);
   $async.Future<$1.Empty> rollback($grpc.ServiceCall call, $3.StringValue request);
 }

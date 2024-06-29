@@ -1,0 +1,22 @@
+{
+  "authService": {
+    "host": "79.174.80.75",
+    "port": 9090
+  },
+  "catService": {
+    "host": "79.174.80.75",
+    "port": 9091
+  },
+  "paymentService": {
+    "host": "79.174.80.75",
+    "port": 9093
+  },
+  "transactionService": {
+    "host": "79.174.80.75",
+    "port": 9094
+  },
+  "tradeService": {
+    "host": "79.174.80.75",
+    "port": 9095
+  }
+}

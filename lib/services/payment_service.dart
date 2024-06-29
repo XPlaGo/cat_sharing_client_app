@@ -26,6 +26,13 @@ class PaymentService {
     );
   }
 
+  Future<ResponseStream<TransactionInfo>> replenish(ReplenishRequest request) async {
+    return stub.replenish(
+      request,
+      options: await AuthService.getAuthCallOptions(),
+    );
+  }
+
   Future<void> rollback(String transactionId) async {
     StringValue id = StringValue();
     id.value = transactionId;

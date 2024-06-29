@@ -7,6 +7,7 @@ import 'package:cat_sharing_client_app/components/pages/default_page.dart';
 import 'package:cat_sharing_client_app/components/skeletons/default_skeleton.dart';
 import 'package:cat_sharing_client_app/components/text/overflow_scrollable_text.dart';
 import 'package:cat_sharing_client_app/generated/payment.pb.dart';
+import 'package:cat_sharing_client_app/pages/replenish/replenish_page.dart';
 import 'package:cat_sharing_client_app/pages/transactions_history/transaction_history_page.dart';
 import 'package:cat_sharing_client_app/pages/transfer/transfer_page.dart';
 import 'package:cat_sharing_client_app/services/payment_account_service.dart';
@@ -140,7 +141,9 @@ class MyPaymentAccountPageState extends State<MyPaymentAccountPage> with AfterLa
           child: CSFlatButton(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            onPressed: (reset) async {},
+            onPressed: (reset) async {
+              await replenish(context, reset);
+            },
             text: "Replenish",
             textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
               color: Theme.of(context).colorScheme.onSecondary,
@@ -179,6 +182,14 @@ class MyPaymentAccountPageState extends State<MyPaymentAccountPage> with AfterLa
     if (accountInfo != null) {
       Navigator.of(context)
           .pushNamed(TransferPage.pageRoute, arguments: TransferPageArguments(senderAccountInfo: accountInfo!))
+          .then((value) => reset());
+    }
+  }
+
+  Future<void> replenish(BuildContext context, Function() reset) async {
+    if (accountInfo != null) {
+      Navigator.of(context)
+          .pushNamed(ReplenishPage.pageRoute, arguments: ReplenishPageArguments(senderAccountInfo: accountInfo!))
           .then((value) => reset());
     }
   }

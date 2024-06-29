@@ -12,6 +12,7 @@ import 'package:cat_sharing_client_app/pages/my_cats/my_cats_page.dart';
 import 'package:cat_sharing_client_app/pages/my_payment_account/my_payment_account_page.dart';
 import 'package:cat_sharing_client_app/pages/offer_page/offer_page.dart';
 import 'package:cat_sharing_client_app/pages/profile/profile_page.dart';
+import 'package:cat_sharing_client_app/pages/replenish/replenish_page.dart';
 import 'package:cat_sharing_client_app/pages/sale_offers/sale_offers_page.dart';
 import 'package:cat_sharing_client_app/pages/search/search_page.dart';
 import 'package:cat_sharing_client_app/pages/settings/settings_page.dart';
@@ -51,7 +52,7 @@ Future<bool> refreshAuth() async {
 }
 
 Future<void> loadConfiguration() async {
-  await GlobalConfiguration().loadFromAsset("dev");
+  await GlobalConfiguration().loadFromAsset("prod");
 }
 
 class MyApp extends StatelessWidget {
@@ -91,6 +92,7 @@ class MyApp extends StatelessWidget {
               "/my_cat": settingPageParameters(const MyCatPage()),
               "/my_payment_account": settingPageParameters(const MyPaymentAccountPage()),
               TransferPage.pageRoute: settingPageParameters(const TransferPage()),
+              ReplenishPage.pageRoute: settingPageParameters(const ReplenishPage()),
               TransactionHistoryPage.pageRoute: settingPageParameters(const TransactionHistoryPage()),
               SaleOffersPage.pageRoute: settingPageParameters(const SaleOffersPage()),
               OfferPage.pageRoute: settingPageParameters(const OfferPage()),

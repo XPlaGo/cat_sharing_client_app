@@ -2,6 +2,7 @@ import 'package:cat_sharing_client_app/config/app.config.dart';
 import 'package:cat_sharing_client_app/generated/google/protobuf/empty.pb.dart';
 import 'package:cat_sharing_client_app/generated/payment.pbgrpc.dart';
 import 'package:cat_sharing_client_app/services/auth_service.dart';
+import 'package:cat_sharing_client_app/services/storage_service.dart';
 import 'package:grpc/grpc.dart';
 import "package:injectable/injectable.dart";
 
@@ -20,10 +21,16 @@ class PaymentAccountService {
   }
 
   Future<AccountInfo> getMyPaymentAccount() async {
-    return await stub.getMyPaymentAccount(
+    AccountInfo accountInfo = await stub.getMyPaymentAccount(
         Empty(),
         options: await AuthService.getAuthCallOptions(),
     );
+    StorageService.saveGeneratedMessage("myPaymentAccount", accountInfo);
+    return accountInfo;
+  }
+
+  Future<AccountInfo?> getMyPaymentAccountLocal() async {
+    return await StorageService.getGeneratedMessage<AccountInfo>("myPaymentAccount");
   }
 
   Future<AccountsInfo> getMyPaymentAccounts() async {

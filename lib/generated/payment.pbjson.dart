@@ -115,6 +115,25 @@ final $typed_data.Uint8List transferRequestDescriptor = $convert.base64Decode(
     'b3VudBgDIAEoCzINLnhwbGFnby5Nb25leVIGYW1vdW50Eh0KB2NvbW1lbnQYBCABKAlIAFIHY2'
     '9tbWVudIgBAUIKCghfY29tbWVudA==');
 
+@$core.Deprecated('Use replenishRequestDescriptor instead')
+const ReplenishRequest$json = {
+  '1': 'ReplenishRequest',
+  '2': [
+    {'1': 'receiverAccountId', '3': 1, '4': 1, '5': 9, '10': 'receiverAccountId'},
+    {'1': 'amount', '3': 2, '4': 1, '5': 11, '6': '.xplago.Money', '10': 'amount'},
+    {'1': 'comment', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'comment', '17': true},
+  ],
+  '8': [
+    {'1': '_comment'},
+  ],
+};
+
+/// Descriptor for `ReplenishRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List replenishRequestDescriptor = $convert.base64Decode(
+    'ChBSZXBsZW5pc2hSZXF1ZXN0EiwKEXJlY2VpdmVyQWNjb3VudElkGAEgASgJUhFyZWNlaXZlck'
+    'FjY291bnRJZBIlCgZhbW91bnQYAiABKAsyDS54cGxhZ28uTW9uZXlSBmFtb3VudBIdCgdjb21t'
+    'ZW50GAMgASgJSABSB2NvbW1lbnSIAQFCCgoIX2NvbW1lbnQ=');
+
 @$core.Deprecated('Use transactionInfoDescriptor instead')
 const TransactionInfo$json = {
   '1': 'TransactionInfo',

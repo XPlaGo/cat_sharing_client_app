@@ -100,8 +100,8 @@ class MyCatPageState extends State<MyCatPage> with AfterLayoutMixin<MyCatPage> {
                 Row(
                   children: [
                     Expanded(child: getSaleOfferPanel(context)),
-                    const SizedBox(width: 10),
-                    Expanded(child: getSaleOfferPanel(context)),
+                    // const SizedBox(width: 10),
+                    // Expanded(child: getArendOfferPanel(context)),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -169,6 +169,39 @@ class MyCatPageState extends State<MyCatPage> with AfterLayoutMixin<MyCatPage> {
     );
   }
 
+  Widget getArendOfferPanel(BuildContext context) {
+    return CSSkeleton(
+        enabled: isSaleOfferLoading,
+        containersColor: Theme.of(context).colorScheme.primaryContainer,
+        child: CSAccentButton(
+          showLoader: false,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          //backgroundColor: Theme.of(context).colorScheme.secondary,
+          isDisabled: false,
+          onPressed: (reset) async {
+            //await createSaleOffer(context);
+          },
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "Expose",
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary
+                  ),
+                ),
+              ),
+              Iconify(
+                Uil.arrow_up_right,
+                size: 24,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ],
+          ),
+        )
+    );
+  }
+
   Widget getSaleOfferPanel(BuildContext context) {
     return CSSkeleton(
       enabled: isSaleOfferLoading,
@@ -214,7 +247,7 @@ class MyCatPageState extends State<MyCatPage> with AfterLayoutMixin<MyCatPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 0, bottom: 5),
+                      padding: const EdgeInsets.only(left: 0, bottom: 0),
                       child: Text(
                         "On sale",
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -223,11 +256,12 @@ class MyCatPageState extends State<MyCatPage> with AfterLayoutMixin<MyCatPage> {
                         textAlign: TextAlign.right,
                       ),
                     ),
-                    getPriceBox(context, saleOfferInfo!.price)
                   ],
                 ),
+                const SizedBox(width: 15),
                 const Spacer(),
-                const SizedBox(width: 5),
+                getPriceBox(context, saleOfferInfo!.price),
+                const SizedBox(width: 15),
                 Iconify(
                   Uil.arrow_up_right,
                   size: 24,

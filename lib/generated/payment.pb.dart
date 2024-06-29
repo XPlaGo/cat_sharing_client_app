@@ -478,6 +478,86 @@ class TransferRequest extends $pb.GeneratedMessage {
   void clearComment() => clearField(4);
 }
 
+class ReplenishRequest extends $pb.GeneratedMessage {
+  factory ReplenishRequest({
+    $core.String? receiverAccountId,
+    Money? amount,
+    $core.String? comment,
+  }) {
+    final $result = create();
+    if (receiverAccountId != null) {
+      $result.receiverAccountId = receiverAccountId;
+    }
+    if (amount != null) {
+      $result.amount = amount;
+    }
+    if (comment != null) {
+      $result.comment = comment;
+    }
+    return $result;
+  }
+  ReplenishRequest._() : super();
+  factory ReplenishRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReplenishRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReplenishRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'xplago'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'receiverAccountId', protoName: 'receiverAccountId')
+    ..aOM<Money>(2, _omitFieldNames ? '' : 'amount', subBuilder: Money.create)
+    ..aOS(3, _omitFieldNames ? '' : 'comment')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReplenishRequest clone() => ReplenishRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReplenishRequest copyWith(void Function(ReplenishRequest) updates) => super.copyWith((message) => updates(message as ReplenishRequest)) as ReplenishRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReplenishRequest create() => ReplenishRequest._();
+  ReplenishRequest createEmptyInstance() => create();
+  static $pb.PbList<ReplenishRequest> createRepeated() => $pb.PbList<ReplenishRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ReplenishRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReplenishRequest>(create);
+  static ReplenishRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get receiverAccountId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set receiverAccountId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasReceiverAccountId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearReceiverAccountId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  Money get amount => $_getN(1);
+  @$pb.TagNumber(2)
+  set amount(Money v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasAmount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAmount() => clearField(2);
+  @$pb.TagNumber(2)
+  Money ensureAmount() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get comment => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set comment($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasComment() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearComment() => clearField(3);
+}
+
 class TransactionInfo extends $pb.GeneratedMessage {
   factory TransactionInfo({
     $core.String? id,

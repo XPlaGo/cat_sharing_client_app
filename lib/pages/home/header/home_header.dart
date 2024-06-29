@@ -51,7 +51,10 @@ class HomeHeaderState extends State<HomeHeader> with AfterLayoutMixin<HomeHeader
               enabled: accountInfo == null,
               child: CatCoinsChip(
                 onPressed: (reset) async {
-                  Navigator.of(context).pushNamed("/my_payment_account").then((value) => reset());
+                  Navigator.of(context).pushNamed("/my_payment_account").then((value) {
+                    reset();
+                    getMyPaymentAccount(context);
+                  });
                 },
                   value: "${accountInfo?.amount.units ?? 0}.${accountInfo?.amount.nanos ?? 0}"
               ),
